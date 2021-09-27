@@ -30,21 +30,26 @@ for _ in range(numOfMines):
 
     grid[x][y] = -1
 
-t=0
+
 
 for q in range (width):
     for a in range (height):
         if grid[q][a]== 0:
             for v in range (-1,1):
-                for s in range (-1, 1):
-                    if grid[q+v][a+s]:
+                for s in range(-1, 1):
+                    if v + q < 0 or v + q > width - 1 or s + a < 0 or s + a > height - 1:
+                        continue
+                    if grid[q+v][a+s]== -1:
                         if s== 0 and v==0:
                             continue
-                        t=t+1
-                        print(t)
+                        grid[q][a] += 1
 
 
-print(grid)
+
+
+for row in grid:
+    print(row)
+
 
 
 while running:
