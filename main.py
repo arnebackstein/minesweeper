@@ -72,19 +72,27 @@ def draw_number(number, x,y):
 
 
 def reveal(x,y):
+    if(grid[x][y] == -2):
+        return
     draw_number(grid[x][y], x*scaling + 10,y*scaling)
-    grid[x][y] = -2
 
 def reveal_recurse(x,y):
-    for x_offset in range(-1, 1, 1):
-        for y_offset in range(-1, 1, 1):
-            x_t = x+x_offset
-            y_t = y+y_offset
-            print(x_t,y_t)
+    for x_offset in range(-1, 2, 1):
+        for y_offset in range(-1, 2, 1):
+            x_t = x + x_offset
+            y_t = y + y_offset
+            if(x_t < 0 or y_t < 0 or x_t >= width or y_t >= height):
+                continue
+
+
+            print("reveal: ",x_t,y_t)
+
             reveal(x_t,y_t)
 
             if(grid[x_t][y_t] == 0):
                 reveal_recurse(x_t,y_t)
+
+            grid[x][y] = -2
 
 while running:
     for event in pygame.event.get():
@@ -98,10 +106,12 @@ while running:
                 x, y = int(pos1[0] /scaling), int(pos1[1] / scaling)
                 if(grid[x][y] == 0):
                     reveal_recurse(x,y)
+                    draw_number(0, x*scaling + 10,y*scaling)
                 elif(grid[x][y] == -1):
                     running = False
                 else:
                     reveal(x,y)
+                    grid[x][y] = -2
 
 
     # Flip the display
